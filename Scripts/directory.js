@@ -13,7 +13,7 @@ const resetBtn = document.getElementById('resetFilters');
 const pageSizeSelect = document.getElementById('pageSize');
 const paginationContainer = document.getElementById('pagination');
 
-Promise.all([fetch('/Data/directory.csv'), fetch('/Data/support_category.csv')])
+Promise.all([fetch('Data/directory.csv'), fetch('Data/support_category.csv')])
   .then(responses => Promise.all(responses.map(r => r.text())))
   .then(([dirText, catText]) => {
     allServices = parseCSV(dirText);
