@@ -335,13 +335,15 @@ if (pageSizeSelect) {
 
 function renderServices(services) {
   const list = document.getElementById('serviceList');
-  const count = document.getElementById('resultsCount');
 
   list.innerHTML = '';
 
   services.forEach(service => {
     const li = document.createElement('li');
     li.className = 'service-card';
+
+    const description = (service.description || '').toString().trim();
+    const showToggle = description.length > 180;
 
     li.innerHTML = `
       <h3>${service.name}</h3>
@@ -351,8 +353,10 @@ function renderServices(services) {
       </p>
 
       <p class="description">
-        ${service.description || ''}
+        ${description}
       </p>
+
+      ${showToggle ? `<button type="button" class="toggle-description" aria-expanded="false">Read more</button>` : ''}
 
       ${
         service.weblinks
@@ -363,10 +367,18 @@ function renderServices(services) {
       }
     `;
 
+    const toggleButton = li.querySelector('.toggle-description');
+    if (toggleButton) {
+      const descEl = li.querySelector('.description');
+      toggleButton.addEventListener('click', () => {
+        const expanded = descEl.classList.toggle('expanded');
+        toggleButton.textContent = expanded ? 'Show less' : 'Read more';
+        toggleButton.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      });
+    }
+
     list.appendChild(li);
   });
-
-  count.textContent = `Showing ${services.length} services`;
 }
 
 /* Event listeners */
