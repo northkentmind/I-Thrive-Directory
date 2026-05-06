@@ -75,6 +75,8 @@ function parseCSV(text) {
 		if (hh.includes('support category')) return 'support category';
 		if (hh === 'age range' || hh === 'age') return 'age range';
 		if (hh.includes('school service')) return 'school service';
+		if (hh.includes('referral process')) return 'referral process';
+		if (hh.includes('referrer')) return 'referrer';
 		// common simple mappings
 		if (hh === 'service') return 'service';
 		if (hh === 'provider') return 'provider';
@@ -94,6 +96,18 @@ function parseCSV(text) {
 		}
 		return obj;
 	});
+}
+
+function normalizeSupportNeed(value) {
+	const raw = (value || '').toString().trim();
+	const lower = raw.toLowerCase();
+	if (!lower) return '';
+	if (lower.includes('getting more help') || lower.includes('specialist')) return 'Getting More Help';
+	if (lower.includes('getting help') || lower.includes('goals based')) return 'Getting Help';
+	if (lower.includes('advice & signposting') || lower.includes('advice and signposting')) return 'Advice & Signposting';
+	if (lower.includes('risk support')) return 'Risk Support';
+	if (lower.includes('thriving')) return 'Thriving';
+	return raw;
 }
 
 function populateCategoryFilter(categories) {
@@ -131,7 +145,7 @@ function applyFilters() {
 			prov.includes(search) ||
 			desc.includes(search);
 
-		const svcThrive = (service['i-thrive'] || '').toString();
+		const svcThrive = normalizeSupportNeed(service['i-thrive']);
 		const svcAgeRaw = (service['age range'] || '').toString();
 		const svcCategory = (service['support category'] || '').toString();
 		const svcSchool = (service['school service'] || '').toString();
@@ -156,7 +170,7 @@ function applyFilters() {
 			}
 		}
 
-		const matchThrive = !thrive || svcThrive.toLowerCase().startsWith(thrive.toLowerCase());
+		const matchThrive = !thrive || svcThrive.toLowerCase() === thrive.toLowerCase();
 		// category matching: service cells may contain multiple categories (e.g. "Wellbeing; Family Support")
 		let matchCategory = true;
 		if (category) {
@@ -340,31 +354,37 @@ function renderServices(services) {
 
   services.forEach(service => {
     const li = document.createElement('li');
-    li.className = 'service-card';
+    const rawSupportNeed = (service['i-thrive'] || '').toString().trim();
+    const supportNeed = normalizeSupportNeed(rawSupportNeed);
+    const supportClass = supportNeed.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    li.className = `service-card${supportClass ? ` support-need-${supportClass}` : ''}`;
 
     const description = (service.description || '').toString().trim();
     const showToggle = description.length > 180;
+    const referralProcess = (service['referral process'] || '').toString().trim();
+    const referrer = (service['referrer'] || '').toString().trim();
 
     li.innerHTML = `
       <h3>${service.name}</h3>
-
-      <p class="meta">
-        ${service['i-thrive']} · ${service['age range']}
-      </p>
+      ${supportNeed ? `<span class="support-need-pill support-need-${supportClass}">${supportNeed} · ${service['age range']}</span>` : ''}
 
       <p class="description">
         ${description}
       </p>
 
-      ${showToggle ? `<button type="button" class="toggle-description" aria-expanded="false">Read more</button>` : ''}
+      ${referralProcess ? `<p class="referral-info"><strong>Who can refer:</strong> ${referralProcess}</p>` : ''}
+      ${referrer ? `<p class="referral-info"><strong>How to refer:</strong> ${referrer}</p>` : ''}
 
-      ${
-        service.weblinks
-          ? `<a href="${service.weblinks}" class="service-link" target="_blank">
-              Visit Link →
-            </a>`
-          : ''
-      }
+      <div class="card-actions">
+        ${showToggle ? `<button type="button" class="toggle-description" aria-expanded="false">Read More</button>` : ''}
+        ${
+          service.weblinks
+            ? `<a href="${service.weblinks}" class="service-link" target="_blank">
+                Visit Website
+              </a>`
+            : ''
+        }
+      </div>
     `;
 
     const toggleButton = li.querySelector('.toggle-description');
@@ -372,7 +392,7 @@ function renderServices(services) {
       const descEl = li.querySelector('.description');
       toggleButton.addEventListener('click', () => {
         const expanded = descEl.classList.toggle('expanded');
-        toggleButton.textContent = expanded ? 'Show less' : 'Read more';
+        toggleButton.textContent = expanded ? 'Show Less' : 'Read More';
         toggleButton.setAttribute('aria-expanded', expanded ? 'true' : 'false');
       });
     }
