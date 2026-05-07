@@ -335,7 +335,7 @@ body {
 }
 
 .thrive-info-btn.active {
-  color: #ffffff;
+  color: #070000;
   border-color: transparent;
 }
 
@@ -360,31 +360,31 @@ body {
 }
 
 .thrive-info-yellow {
-  color: #4f1f01;
+  color: #1c1c00;
   background: #fbdb16;
   border-color: rgba(251, 219, 22, 0.45);
 }
 
 .thrive-info-green {
-  color: #014019;
+  color: #fffffe;
   background: #749c20;
   border-color: rgba(74, 222, 128, 0.35);
 }
 
 .thrive-info-blue {
-  color: #042437;
+  color: #fffffe;
   background: #1175ad;
   border-color: rgba(96, 165, 250, 0.35);
 }
 
 .thrive-info-purple {
-  color: #1b0145;
+  color: #fffffe;
   background: #896e97;
   border-color: rgba(192, 132, 252, 0.35);
 }
 
 .thrive-info-orange {
-  color: #3f1000;
+  color: #fffffe;
   background: #fc900a;
   border-color: rgba(249, 115, 22, 0.35);
 }
