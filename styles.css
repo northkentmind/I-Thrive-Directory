@@ -294,6 +294,135 @@ body {
   font-size: 1.05rem;
 }
 
+/* i-THRIVE info buttons */
+.thrive-info-section {
+  margin-bottom: 2rem;
+}
+
+.thrive-info-panel {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.thrive-info-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.thrive-info-btn {
+  flex: 1 1 170px;
+  min-width: 140px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.thrive-info-btn:hover,
+.thrive-info-btn:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+}
+
+.thrive-info-btn.active {
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.thrive-info-yellow.active {
+  background: #fbbf24;
+}
+
+.thrive-info-green.active {
+  background: #4ade80;
+}
+
+.thrive-info-blue.active {
+  background: #60a5fa;
+}
+
+.thrive-info-purple.active {
+  background: #c084fc;
+}
+
+.thrive-info-orange.active {
+  background: #f97316;
+}
+
+.thrive-info-yellow {
+  color: #4f1f01;
+  background: #fbdb16;
+  border-color: rgba(251, 219, 22, 0.45);
+}
+
+.thrive-info-green {
+  color: #014019;
+  background: #749c20;
+  border-color: rgba(74, 222, 128, 0.35);
+}
+
+.thrive-info-blue {
+  color: #042437;
+  background: #1175ad;
+  border-color: rgba(96, 165, 250, 0.35);
+}
+
+.thrive-info-purple {
+  color: #1b0145;
+  background: #896e97;
+  border-color: rgba(192, 132, 252, 0.35);
+}
+
+.thrive-info-orange {
+  color: #3f1000;
+  background: #fc900a;
+  border-color: rgba(249, 115, 22, 0.35);
+}
+
+.thrive-info-copy {
+  min-height: 96px;
+  padding: 0.25rem 0.25rem 0 0.25rem;
+}
+
+.thrive-info-copy h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.thrive-info-copy p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .thrive-info-btn {
+    flex: 1 1 calc(50% - 0.75rem);
+  }
+}
+
+@media (max-width: 520px) {
+  .thrive-info-buttons {
+    flex-direction: column;
+  }
+
+  .thrive-info-btn {
+    flex: 1 1 100%;
+  }
+}
+
 .support-box,
 .link-box {
   background: var(--bg-secondary);
