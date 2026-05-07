@@ -401,6 +401,57 @@ function renderServices(services) {
   });
 }
 
+const thriveInfoData = {
+  whatIs: {
+    title: 'What is i-THRIVE?',
+    text: 'i-THRIVE groups mental health support into different areas, based on needs. This makes it easier to see what support is available and find what feels right, helping people feel better and thrive.'
+  },
+  gettingAdvice: {
+    title: 'Getting advice',
+    text: 'This is for when information or guidance is enough. It may include tips, resources, or being signposted to other support.'
+  },
+  gettingHelp: {
+    title: 'Getting help',
+    text: 'This is for when some support is needed. It is usually short-term and focused on goals for one need.'
+  },
+  gettingMoreHelp: {
+    title: 'Getting more help',
+    text: 'This is for when longer or more specialist help is best. Usually there are multiple needs that require support.'
+  },
+  gettingRiskSupport: {
+    title: 'Getting risk support',
+    text: 'This is for when someone is in crisis or at risk. Support focuses on keeping people safe and responding to urgent needs.'
+  }
+};
+
+function setThriveInfo(key) {
+  const infoCopy = document.getElementById('thriveInfoCopy');
+  if (!infoCopy) return;
+  const info = thriveInfoData[key];
+  if (!info) {
+    infoCopy.innerHTML = '<p>Select a level above to see what it means.</p>';
+    return;
+  }
+  infoCopy.innerHTML = `
+    <h3>${info.title}</h3>
+    <p>${info.text}</p>
+  `;
+}
+
+function initThriveInfoButtons() {
+  const buttons = document.querySelectorAll('.thrive-info-btn');
+  if (!buttons.length) return;
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      buttons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      setThriveInfo(button.dataset.info);
+    });
+  });
+}
+
+initThriveInfoButtons();
+
 /* Event listeners */
 searchInput.addEventListener('input', applyFilters);
 thriveFilter.addEventListener('change', applyFilters);
