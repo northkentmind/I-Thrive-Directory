@@ -1,0 +1,32 @@
+KPI_ID,KPI_Name (for reference),Department_ID
+1,Total Referrals Received,CYP
+1,Total Referrals Received,CTS
+1,Total Referrals Received,SUN
+4,Average Time from Referral to Intervention Start,CYP
+4,Average Time from Referral to Intervention Start,CTS
+4,Average Time from Referral to Intervention Start,SUN
+5,Waiting-Time Breaches,CYP
+5,Waiting-Time Breaches,CTS
+5,Waiting-Time Breaches,SUN
+8,Goal-Based Outcomes (GBO) Improvement,CYP
+8,Goal-Based Outcomes (GBO) Improvement,CTS
+9,ROM Completion and Improvement Rate,CYP
+9,ROM Completion and Improvement Rate,CTS
+10,Attendance Rate,CYP
+10,Attendance Rate,CTS
+10,Attendance Rate,SUN
+11,DNA (Did Not Attend) Rate,CYP
+11,DNA (Did Not Attend) Rate,CTS
+11,DNA (Did Not Attend) Rate,SUN
+6,Active Safeguarding Cases,CYP
+7,Safeguarding Response Timeliness,CYP
+15,CYP Transition to Adult Services,CYP
+,Team Meetings,Housing and Facilities
+,Team Meetings,Office Operations and Facilities
+,Team Meetings,Development and Engagement
+,Team Meetings,SUN
+,Team Meetings,CYP
+,Team Meetings,AdSS 
+,Team Meetings,HR
+,Team Meetings,CTS
+,Team Meetings,Finance
