@@ -8,7 +8,7 @@ const searchInput = document.getElementById('searchInput');
 const thriveFilter = document.getElementById('filterThrive');
 const ageFilter = document.getElementById('filterAge');
 const categoryFilter = document.getElementById('filterCategory');
-const schoolFilter = document.getElementById('filterSchool');
+const referrerFilter = document.getElementById('filterReferrer');
 const resetBtn = document.getElementById('resetFilters');
 const pageSizeSelect = document.getElementById('pageSize');
 const paginationContainer = document.getElementById('pagination');
@@ -19,7 +19,9 @@ Promise.all([fetch('Data/directory.csv'), fetch('Data/support_category.csv')])
     allServices = parseCSV(dirText);
     const catRows = parseCSV(catText); // expects header 'Name' -> normalized to 'name'
     const categories = catRows.map(r => (r.name || '').toString().trim()).filter(Boolean);
+    const referrers = allServices.map(s => (s.referrer || '').toString().trim()).filter(Boolean);
     populateCategoryFilter(categories);
+    populateReferrerFilter(referrers);
     applyFilters();
   })
   .catch(err => console.error(err));
@@ -127,12 +129,29 @@ function populateCategoryFilter(categories) {
 	});
 }
 
+function populateReferrerFilter(referrers) {
+	// remove old options except the first "All"
+	while (referrerFilter.options.length > 1) {
+		referrerFilter.remove(1);
+	}
+
+	const uniq = [...new Set(referrers.map(r => r.toString().trim()))].filter(Boolean);
+	uniq.sort((a, b) => a.localeCompare(b));
+
+	uniq.forEach(ref => {
+		const opt = document.createElement('option');
+		opt.textContent = ref;
+		opt.value = ref;
+		referrerFilter.appendChild(opt);
+	});
+}
+
 function applyFilters() {
 	const search = searchInput.value.toLowerCase();
 	const thrive = thriveFilter.value;
 	const age = ageFilter.value; // normalized token from option value
 	const category = categoryFilter.value;
-	const school = schoolFilter.value;
+	const referrer = referrerFilter.value;
 
 	const filtered = allServices.filter(service => {
 		const svcName = (service.name || service.service || '').toString().toLowerCase();
@@ -148,7 +167,7 @@ function applyFilters() {
 		const svcThrive = normalizeSupportNeed(service['i-thrive']);
 		const svcAgeRaw = (service['age range'] || '').toString();
 		const svcCategory = (service['support category'] || '').toString();
-		const svcSchool = (service['school service'] || '').toString();
+		const svcReferrer = (service['referrer'] || '').toString();
 
 		// age matching: handle multi-value cells like "Primary school age, Secondary School age and post 16"
 		let matchAge = true;
@@ -184,9 +203,9 @@ function applyFilters() {
 				.filter(Boolean);
 			matchCategory = svcTokens.includes(sel) || svcCatRaw.toLowerCase().includes(sel);
 		}
-		const matchSchool = !school || (svcSchool.toLowerCase() === school.toLowerCase());
+		const matchReferrer = !referrer || svcReferrer.toLowerCase() === referrer.toLowerCase();
 
-		return matchesSearch && matchThrive && matchAge && matchCategory && matchSchool;
+		return matchesSearch && matchThrive && matchAge && matchCategory && matchReferrer;
 	});
 
 	// store filtered list and reset paging
@@ -457,14 +476,14 @@ searchInput.addEventListener('input', applyFilters);
 thriveFilter.addEventListener('change', applyFilters);
 ageFilter.addEventListener('change', applyFilters);
 categoryFilter.addEventListener('change', applyFilters);
-schoolFilter.addEventListener('change', applyFilters);
+referrerFilter.addEventListener('change', applyFilters);
 
 resetBtn.addEventListener('click', () => {
   searchInput.value = '';
   thriveFilter.value = '';
   ageFilter.value = '';
   categoryFilter.value = '';
-  schoolFilter.value = '';
+  referrerFilter.value = '';
   applyFilters();
 });
 
