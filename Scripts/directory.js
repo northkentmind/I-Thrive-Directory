@@ -19,7 +19,7 @@ Promise.all([fetch('Data/directory.csv'), fetch('Data/support_category.csv')])
     allServices = parseCSV(dirText);
     const catRows = parseCSV(catText); // expects header 'Name' -> normalized to 'name'
     const categories = catRows.map(r => (r.name || '').toString().trim()).filter(Boolean);
-    const referrers = allServices.map(s => (s.referrer || '').toString().trim()).filter(Boolean);
+    const referrers = allServices.map(s => (s['who can refer'] || '').toString().trim()).filter(Boolean);
     populateCategoryFilter(categories);
     populateReferrerFilter(referrers);
     applyFilters();
@@ -77,8 +77,8 @@ function parseCSV(text) {
 		if (hh.includes('support category')) return 'support category';
 		if (hh === 'age range' || hh === 'age') return 'age range';
 		if (hh.includes('school service')) return 'school service';
-		if (hh.includes('referral process')) return 'referral process';
-		if (hh.includes('referrer')) return 'referrer';
+		if (hh.includes('how to refer')) return 'how to refer';
+		if (hh.includes('who can refer')) return 'who can refer';
 		// common simple mappings
 		if (hh === 'service') return 'service';
 		if (hh === 'provider') return 'provider';
@@ -380,8 +380,8 @@ function renderServices(services) {
 
     const description = (service.description || '').toString().trim();
     const showToggle = description.length > 180;
-    const referralProcess = (service['referral process'] || '').toString().trim();
-    const referrer = (service['referrer'] || '').toString().trim();
+    const referralProcess = (service['how to refer'] || '').toString().trim();
+    const referrer = (service['who can refer'] || '').toString().trim();
 
     li.innerHTML = `
       <h3>${service.name}</h3>
@@ -391,8 +391,8 @@ function renderServices(services) {
         ${description}
       </p>
 
-      ${referralProcess ? `<p class="referral-info"><strong>Who can refer:</strong> ${referralProcess}</p>` : ''}
-      ${referrer ? `<p class="referral-info"><strong>How to refer:</strong> ${referrer}</p>` : ''}
+      ${referralProcess ? `<p class="referral-info"><strong>How to refer:</strong> ${referralProcess}</p>` : ''}
+      ${referrer ? `<p class="referral-info"><strong>Who can refer:</strong> ${referrer}</p>` : ''}
 
       <div class="card-actions">
         ${showToggle ? `<button type="button" class="toggle-description" aria-expanded="false">Read More</button>` : ''}

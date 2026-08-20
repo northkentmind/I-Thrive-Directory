@@ -49,6 +49,8 @@ function parseCSV(text) {
 		if (hh.includes('support category')) return 'support category';
 		if (hh === 'age range' || hh === 'age') return 'age range';
 		if (hh.includes('school service')) return 'school service';
+		if (hh.includes('how to refer')) return 'how to refer';
+		if (hh.includes('who can refer')) return 'who can refer';
 		// common simple mappings
 		if (hh === 'service') return 'service';
 		if (hh === 'provider') return 'provider';
